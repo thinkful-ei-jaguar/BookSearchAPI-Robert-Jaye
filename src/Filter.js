@@ -4,18 +4,24 @@ class Filter extends Component {
   render(){
     return(
       <div>
-        <p>Filter Type:</p>
-        <select name="printtype" size="1">
-          <option value="all">All</option>
-          <option value="book">book</option>
-          <option value="magazine">magazine</option>
-        </select>
-        <p>book Type:</p>
-        <select name="booktype" size="1">
-          <option value="nofilter">No Filter</option>
-          <option value="ebook">ebook</option>
-          <option value="free">free</option>
-        </select>
+        <form onSubmit={this.props.handleSubmitPrint}> 
+          <p>Filter Type:</p>
+          <select name="printtype" size="1" onChange={this.props.handleFilterPrint}>
+            <option value="">All</option>
+            <option value="books">book</option>
+            <option value="magazines">magazine</option>
+          </select>
+          <input type="submit" value="Submit" />
+        </form>
+        <form onSubmit={this.props.handleSubmitBook}>
+          <p>book Type:</p>
+          <select name="booktype" size="1" onChange={e => this.props.handleFilterBook(e.target.value)}>
+            <option value="">No Filter</option>
+            <option value="ebooks">ebook</option>
+            <option value="free-ebooks">free</option>
+          </select>
+          <input type="submit" value="Submit" />
+        </form>
       </div>
     );
   }

@@ -2,10 +2,6 @@ import React, { Component }  from 'react';
 import Book from './Book';
 
 class BookList extends Component {
-
-
-
-  
   render(){
    console.log(this.props.books);
     const books = this.props.books
@@ -18,6 +14,4 @@ class BookList extends Component {
     );
   }
 }
-
-
 export default BookList;

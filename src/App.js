@@ -26,7 +26,6 @@ class App extends Component {
     this.setState({
       q: event.target.value,
     })
-    //console.log(this.state.q);
   }
 
   handleSubmit = event => {
@@ -50,13 +49,83 @@ class App extends Component {
         books: data.items,
         error: null
       });
-      //console.log(this.state.books)
     })
     .catch(err => {
       this.setState({
         error: err.message
       });
     });
+  }
+
+  handleFilterPrint = (event) => {
+    this.setState({
+      printType: event.target.value,
+    })
+  }
+
+  handleSubmitPrint = event => {
+    event.preventDefault();
+    const APIkey = 'AIzaSyDVXu88ByR9KcBl1H0IhiAc84Zg3d6qpuA';
+    const url = 'https://www.googleapis.com/books/v1/volumes?&q=' + this.state.q +'&printType=' + this.state.printType +'&key=' + APIkey;
+    const options = {
+      method: 'GET'
+    };
+
+    fetch(url, options) 
+    .then(res => {
+      if(!res.ok) {
+        throw new Error('Something went wrong, please try again later.');
+      }
+      return res;
+    })
+    .then(res => res.json())
+    .then(data => {
+      this.setState({
+        books: data.items,
+        error: null
+      });
+    })
+    .catch(err => {
+      this.setState({
+        error: err.message
+      });
+    });
+  }
+
+  handleFilterBook = (book) => {
+    this.setState({
+      bookType: book,
+    })
+  }
+
+  handleSubmitBook = event => {
+    event.preventDefault();
+    const APIkey = 'AIzaSyDVXu88ByR9KcBl1H0IhiAc84Zg3d6qpuA';
+    const url = 'https://www.googleapis.com/books/v1/volumes?&q=' + this.state.q +'&filter=' + this.state.bookType +'&key=' + APIkey;
+    const options = {
+      method: 'GET'
+    };
+
+    fetch(url, options) 
+    .then(res => {
+      if(!res.ok) {
+        throw new Error('Something went wrong, please try again later.');
+      }
+      return res;
+    })
+    .then(res => res.json())
+    .then(data => {
+      this.setState({
+        books: data.items,
+        error: null
+      });
+    })
+    .catch(err => {
+      this.setState({
+        error: err.message
+      });
+    });
+    console.log(this.state.books);
   }
 
   render() {
@@ -70,12 +139,14 @@ class App extends Component {
           <input type="text" name="Search" onChange={this.handleChange}></input>
           <button type='submit' value='submit'>Search</button>
         </form>
-        <Filter />
+        <Filter handleFilterPrint={this.handleFilterPrint} handleFilterBook={this.handleFilterBook}
+          bookType={this.state.bookType} handleSubmitBook={this.handleSubmitBook} handleSubmitPrint={this.handleSubmitPrint}
+        />
         <BookList books={this.state.books}/>
         
       </main>
     );
   }
 }
-//
+
 export default App;
