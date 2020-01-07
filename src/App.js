@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Filter from './Filter';
-import BookList from './BookList';
+//import BookList from './BookList';
 
 class App extends Component {
   state = {
@@ -9,7 +9,7 @@ class App extends Component {
     printType: '',
     bookType: '',
   }
-  //GET https://www.googleapis.com/books/v1/volumes?q=time&printType=magazines&key=yourAPIKey
+
   componentDidMount() {
     const APIkey = 'AIzaSyDVXu88ByR9KcBl1H0IhiAc84Zg3d6qpuA';
     const url = 'https://www.googleapis.com/books/v1/volumes?';
@@ -19,12 +19,8 @@ class App extends Component {
         "Authorization": {APIkey},
         "Content-Type": "application/json"
       }
-  };
-
-  //fetch(url, options) {
-
-  //}
-}
+    };
+  }
 
   handleChange = event => {
     this.setState({
@@ -34,23 +30,32 @@ class App extends Component {
 
   handleSubmit = event => {
     event.preventDefault();
-    console.log(this.state.q);
-    
-    /*
-    const bookmark = (({title, url, description, rating}) => ({title, url, description, rating}))(this.state);
-    const url ='https://tf-ed-bookmarks-api.herokuapp.com/v3/bookmarks';
+    const APIkey = 'AIzaSyDVXu88ByR9KcBl1H0IhiAc84Zg3d6qpuA';
+    const url = 'https://www.googleapis.com/books/v1/volumes?&q=' + this.state.q +'&key=' + APIkey;
     const options = {
-      method: 'POST',
-      body: JSON.stringify(bookmark),
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": "Bearer $2a$10$ZhdeJefcb.5sx/DCmO/n8u5sJLcARAdbHw9tfm1mevGRq3s1.5DpW"
+      method: 'GET'
+    };
+
+    fetch(url, options) 
+    .then(res => {
+      if(!res.ok) {
+        throw new Error('Something went wrong, please try again later.');
       }
-    };*/
-
-    //fetch(url, options) {
-
-    //}
+      return res;
+    })
+    .then(res => res.json())
+    .then(data => {
+      this.setState({
+        books: data,
+        error: null
+      });
+      console.log(this.state.books)
+    })
+    .catch(err => {
+      this.setState({
+        error: err.message
+      });
+    });
   }
 
   render() {
@@ -65,11 +70,12 @@ class App extends Component {
           <button type='submit' value='submit'>Search</button>
         </form>
         <Filter />
-        <BookList books={this.state.books}/>
+        
         
       </main>
     );
   }
 }
+//<BookList books={this.state.books}/>
 
 export default App;
