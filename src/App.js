@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Filter from './Filter';
-//import BookList from './BookList';
+import BookList from './BookList';
 
 class App extends Component {
   state = {
@@ -26,6 +26,7 @@ class App extends Component {
     this.setState({
       q: event.target.value,
     })
+    //console.log(this.state.q);
   }
 
   handleSubmit = event => {
@@ -46,10 +47,10 @@ class App extends Component {
     .then(res => res.json())
     .then(data => {
       this.setState({
-        books: data,
+        books: data.items,
         error: null
       });
-      console.log(this.state.books)
+      //console.log(this.state.books)
     })
     .catch(err => {
       this.setState({
@@ -70,11 +71,11 @@ class App extends Component {
           <button type='submit' value='submit'>Search</button>
         </form>
         <Filter />
-        
+        <BookList books={this.state.books}/>
         
       </main>
     );
   }
 }
-//<BookList books={this.state.books}/>
+//
 export default App;
